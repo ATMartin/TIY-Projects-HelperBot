@@ -30,7 +30,7 @@ wss .on('connection', function(ws) {
       .on('end', function() {
         var latest = JSON.parse(body)[0];
         if  
-        ws.send(JSON.stringify(latest).replace(/http://\S*(\.(gif))\s/gi, "<img src='$&'>"), function() {} )});  
+        ws.send(JSON.stringify(latest).replace(/http://\S*(\.(gif))\s/gi, "<img src='$&'>")), function() {} )});  
     });
   }, 1000);
   
