@@ -29,7 +29,7 @@ wss.on('connection', function(ws) {
     res.on('end', function() {
         var latest = JSON.parse(body)[0];
         // var regex = new RegExp("\/http\:\/\/\\S\*\(\\.\(gif\)\)\/gi");
-        var filters = JSON.stringify(latest["message"]).replace(/([^\s]+(\.(gif))$)/gi, "<img src='$&'>");
+        var filters = JSON.stringify(latest["message"]).match(/([^\s]+(\.(gif))$)/gi) // "<img src='$&'>");
          // ws.send(JSON.stringify(latest).replace(/http://\S*(\.(gif))\s/gi, "<img src='$&'>")), function() {} )});  
         ws.send(filters, function() {});
       });
