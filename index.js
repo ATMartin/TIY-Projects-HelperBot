@@ -27,7 +27,7 @@ wss .on('connection', function(ws) {
     var body = '';
     res
       .on('data', function(chunk) { body += chunk; })
-      .on('end', function() { ws.send(JSON.parse(body)[0], function() {} });  
+      .on('end', function() { ws.send(JSON.parse(body)[0], function() {} )});  
     });
   }, 1000);
   
