@@ -5,9 +5,10 @@
  var host = location.origin.replace(/^http/, 'ws');
  var ws = new WebSocket(host);
  ws.onmessage = function(event) {
-  var li = document.createElement('li');
-  li.innerHTML = JSON.parse(event.data);
-  document.getElementsByClassName('pings')[0].appendChild(li);
+   console.log(event.data);
+  // var li = document.createElement('li');
+  // li.innerHTML = JSON.parse(event.data);
+  // document.getElementsByClassName('pings')[0].appendChild(li);
  };
 </script>
 </head>
