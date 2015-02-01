@@ -28,8 +28,9 @@ wss .on('connection', function(ws) {
     res
       .on('data', function(chunk) { body += chunk; })
       .on('end', function() {
-        var latest = JSON.parse(body)[0]; 
-        ws.send(JSON.stringify(latest), function() {} )});  
+        var latest = JSON.parse(body)[0];
+        if  
+        ws.send(JSON.stringify(latest).replace(/http://\S*(\.(gif))\s/gi, "<img src='$&'>"), function() {} )});  
     });
   }, 1000);
   
