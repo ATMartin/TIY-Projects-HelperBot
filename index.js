@@ -28,7 +28,7 @@ wss.on('connection', function(ws) {
     res.on('data', function(chunk) { body += chunk; })
     res.on('end', function() {
         var latest = JSON.parse(body)[0];
-        var regex = new RegExp("/http://\\S*(\\.(gif))/gi");
+        var regex = new RegExp("/http\://\\S\*(\\.(gif))/gi");
         var filters = JSON.stringify(latest["message"]).replace(regex, "<img src='$&'>");
          // ws.send(JSON.stringify(latest).replace(/http://\S*(\.(gif))\s/gi, "<img src='$&'>")), function() {} )});  
         ws.send(filters, function() {});
