@@ -32,7 +32,7 @@ wss.on('connection', function(ws) {
         // var filters = JSON.stringify(latest["message"]).match(/([^\s]+(\.(gif))$)/gi) // "<img src='$&'>");
         var filters = /([^\s]+(\.(gif))$)/gi.test(JSON.stringify(latest["message"])).toString();
          // ws.send(JSON.stringify(latest).replace(/http://\S*(\.(gif))\s/gi, "<img src='$&'>")), function() {} )});  
-        ws.send(filters, function() {});
+        ws.send(JSON.stringify(latest["message"]), function() {});
       });
     });
   }, 1000);
