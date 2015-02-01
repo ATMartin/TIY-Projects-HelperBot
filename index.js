@@ -17,7 +17,7 @@ console.log("http server listening on %d", port);
 var wss = new wsServer({server: server});
 console.log("Created WS Server");
 
-wss .on('connection', function(ws) {
+wss.on('connection', function(ws) {
   // var id = setInterval(function() {
   //   ws.send(JSON.stringify(new Date()), function() { })
   // }, 1000); 
@@ -25,12 +25,14 @@ wss .on('connection', function(ws) {
   var msgs = setInterval(function() {
     http.get(remoteUrl, function(res) {
     var body = '';
-    res
-      .on('data', function(chunk) { body += chunk; })
-      .on('end', function() {
+    res.on('data', function(chunk) { body += chunk; })
+    res.on('end', function() {
         var latest = JSON.parse(body)[0];
-        if  
-        ws.send(JSON.stringify(latest).replace(/http://\S*(\.(gif))\s/gi, "<img src='$&'>")), function() {} )});  
+        var regex = new RegExp("/http://\\S*(\\.(gif))\\s/gi");
+        var filters = JSON.stringify(latest).replace(regex, "<img src='$&'>"); 
+        // ws.send(JSON.stringify(latest).replace(/http://\S*(\.(gif))\s/gi, "<img src='$&'>")), function() {} )});  
+        ws.send(filters, function() {})
+      });
     });
   }, 1000);
   
