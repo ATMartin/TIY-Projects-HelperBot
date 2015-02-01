@@ -1,14 +1,34 @@
+var wsServer = require("ws").Server;
+var http = require("http");
 var express = require('express');
 var app = express();
-var cool = require('cool-ascii-faces');
+
+var port = process.env.PORT || 4567
+
+
 
 app.set('port', (process.env.PORT || 5000));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/'));
 
-app.get('/', function(request, response) {
-  response.send(cool());
+var server = http.createServer(app);
+server.listen(port);
+
+console.log("http server listening on %d", port);
+
+var wss = new wsServer({server: server});
+console.log("Created WS Server");
+
+wss .on('connection', function(ws) {
+  var id = setInterval(function() {
+    ws.send(JSON.stringify(new Date()), function() { })
+  }, 1000); 
+  
+  console.log("connection opened!");
+  
+  ws.on("close", function() {
+    console.log("close");
+    clearInterval(id);  
+  }); 
 });
 
-app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'));
-});
+
