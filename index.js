@@ -29,10 +29,9 @@ wss.on('connection', function(ws) {
     res.on('end', function() {
         var latest = JSON.parse(body)[0];
         var regex = new RegExp("/http://\\S*(\\.(gif))/gi");
-        var filters = JSON.stringify(latest).replace(regex, "<img src='$&'>"); 
-        // ws.send(JSON.stringify(latest).replace(/http://\S*(\.(gif))\s/gi, "<img src='$&'>")), function() {} )});  
-        ws.send(filters, function() {})
-      });
+        var filters = JSON.parse(latest)["message"].replace(regex, "<img src='$&'>");
+         // ws.send(JSON.stringify(latest).replace(/http://\S*(\.(gif))\s/gi, "<img src='$&'>")), function() {} )});  
+        ws.send(JSON.stringify(filters), function() {});
     });
   }, 1000);
   
