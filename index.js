@@ -88,7 +88,7 @@ wss.on('connection', function(ws) {
           return; 
           } else {
           filterCommands(latest["message"]);
-          ws.send(latest, function() {});
+          ws.send(JSON.stringify(latest), function() {});
           mostRecentID = latest["_id"];
         };
         // var regex = new RegExp("\/http\:\/\/\\S\*\(\\.\(gif\)\)\/gi");
