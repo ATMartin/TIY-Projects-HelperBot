@@ -19,6 +19,7 @@ var botName = "HelperBot";
 var botInit = "#!";
 var regexPics = /([^\s]+(\.(gif|jpg|jpeg|png)))/gi;
 var mostRecentID;
+var botPoller;
 
 var filterCommands = function(message) {
   console.log(message);
@@ -80,19 +81,7 @@ wss.on('connection', function(ws) {
   //   ws.send(JSON.stringify(new Date()), function() { })
   // }, 1000); 
   // var mostRecentID = '';
-  var msgs = setInterval(function() {
-    http.get(remoteUrl, function(res) {
-    var body = '';
-    res.on('data', function(chunk) { body += chunk; })
-    res.on('end', function() {
-        var latest = JSON.parse(body)[0];
-        if (latest["_id"] === mostRecentID) { 
-          return; 
-          } else {
-          filterCommands(latest["message"]);
-          ws.send(JSON.stringify(latest), function() {});
-          mostRecentID = latest["_id"];
-        };
+        // ws.send(JSON.stringify(latest), function() {});
         // var regex = new RegExp("\/http\:\/\/\\S\*\(\\.\(gif\)\)\/gi");
         // var filters = JSON.stringify(latest["message"]).replace(/([^\s]+(\.(gif)))/gi, "<img src='$&'>").replace('"', '');
         // var filters = /([^\s]+(\.(gif)))/gi.test(JSON.stringify(latest["message"])).toString();
@@ -106,12 +95,12 @@ wss.on('connection', function(ws) {
   
   ws.on("close", function() {
     console.log("close");
-    clearInterval(msgs);  
+    // clearInterval(msgs);  
   }); 
 });
 
 app.get("/kickstart", function(req, res) {
-  var botPoller = setInterval(function() {
+  botPoller = setInterval(function() {
     http.get(remoteUrl, function(response) {
       var body = '';
       response.on('data', function(chunk) { body += chunk; });
