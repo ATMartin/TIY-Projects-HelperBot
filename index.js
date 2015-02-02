@@ -26,15 +26,20 @@ var filterCommands = function(message) {
   if (message.split(' ')[0] === botInit) {
     var command = message.split(' ')[1];
     console.log("Command received for " + botName + ": '" + command + "'!");
-    if (regexPics.test(command)) { postMessage(imageEncode(command)); }     
+    if (regexPics.test(command)) { 
+      postMessage(imageEncode(command));
+    }     
   }
   return message;
 }
 
 var imageEncode = function(string) {
+
+  console.log("Generating photo tag now.");
+  
   return string
          .replace('"', '')
-         .replace(/([^\s]+(\.(gif|jpg|jpeg|png)))/gi, '<img src="$&">');
+         .replace(regexPics, '<img src="$&">');
 }
 
 var postMessage = function(message) {
