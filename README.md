@@ -1,36 +1,12 @@
-# node-js-getting-started
+# Chatapp - "HelperBot"
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
+This is a simple Heroku / Node app that watches our local chat server and performs a handful of helpful functions. 
+It began life as a push notification server for a chat app but has grown from there. The push notifications (via Websockets) are still in place but are commented out to save resources - feel free to turn them back on and deploy a new version if you prefer. 
 
-This application support the [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
+Thanks to [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) for getting me started on Heroku. Woohoo!
 
-## Running Locally
+## Usage
 
-Make sure you have [Node.js](http://nodejs.org/) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
-
-```sh
-$ git clone git@github.com:heroku/node-js-getting-started.git # or clone your own fork
-$ cd node-js-getting-started
-$ npm install
-$ npm start
-```
-
-Your app should now be running on [localhost:5000](http://localhost:5000/).
-
-## Deploying to Heroku
-
-```
-$ heroku create
-$ git push heroku master
-$ heroku open
-```
-
-## Documentation
-
-For more information about using Node.js on Heroku, see these Dev Center articles:
-
-- [Getting Started with Node.js on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
-- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
+  - "#! image-url" : HelperBot will add an image tag with the image-url as the source. The url must end in gif, jpg, jpeg or png.
+  - "#! cageme" : Provides a random picture of a cat with Nic Cage's face. For reasons.
+  - SCRIPT-DEFENDER (passive) : prevents 'script' tags from being stored on the server. WARNING: script will execute to currently-watching users, but will be deleted almost immediately. Make sure you're refreshing your messages! 
