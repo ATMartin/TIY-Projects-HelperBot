@@ -40,11 +40,10 @@ var filterCommands = function(message) {
           body = JSON.parse(body);
           body = body.responseData.results;
           var random = Math.floor(Math.random() * body.length);
-          console.log("Got " + body[random].unescapedUrl + "!");
-          postMessage('<img src="' + body[random].unescapedUrl + '">');  
+          //console.log("Got " + body[random].unescapedUrl + "!");
+          postMessage('<img src="' + body[random].unescapedUrl + '" height="100px">');  
         });
       });
-      postMessage("Incoming!");
     }
   }
   return message;
@@ -55,7 +54,7 @@ var imageEncode = function(string) {
   console.log("Generating photo tag now.");
   var imgTag = string
                //.replace('"', '')
-               .replace(regexPics, "<img src='$&'>");
+               .replace(regexPics, "<img src='$&' height='100px'>");
   console.log(imgTag);
   return imgTag;
 }
