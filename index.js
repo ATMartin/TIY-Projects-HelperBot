@@ -30,7 +30,10 @@ var filterCommands = function(message) {
     if (regexPics.test(command)) {
       var img = imageEncode(command); 
       postMessage(img);
-    }     
+    }
+    else if (command == "cageme") {
+      postMessage("Incoming!");
+    }
   }
   return message;
 }
