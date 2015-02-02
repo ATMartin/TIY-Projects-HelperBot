@@ -20,6 +20,7 @@ var botInit = "#!";
 var regexPics = /([^\s]+(\.(gif|jpg|jpeg|png)))/gi;
 
 var filterCommands = function(message) {
+  console.log(message);
   if (message.split(' ')[0] === botInit) {
     var command = message.split(' ')[1];
     console.log("Command received for " + botName + ": '" + command + "'!");
@@ -28,11 +29,17 @@ var filterCommands = function(message) {
   return message;
 }
 
+var imageEncode = function(string) {
+  return string
+         .replace('"', '')
+         .replace(/([^\s]+(\.(gif|jpg|jpeg|png)))/gi, '<img src="$&">');
+}
+
 var postMessage = function(message) {
   var data = {
     "username": botName,
     "message": message,
-    "createdAt": Date.now(),
+    "createdAt": Date.now().toString(),
     "appName": "After12"
   };
 
@@ -63,12 +70,6 @@ var postMessage = function(message) {
   req.write(dataString);
   req.end();
 };
-
-var imageEncode = function(string) {
-  return string
-         .replace('"', '')
-         .replace(/([^\s]+(\.(gif|jpg|jpeg|png)))/gi, '<img src="$&">');
-}
 
 var wss = new wsServer({server: server});
 console.log("Created WS Server");
