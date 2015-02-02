@@ -25,6 +25,7 @@ var cageURL = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=
 
 var filterCommands = function(message) {
   console.log(message);
+
   if (message.split(' ')[0] === botInit) {
     var command = message.split(' ')[1];
     console.log("Command received for " + botName + ": '" + command + "'!");
@@ -40,7 +41,6 @@ var filterCommands = function(message) {
           body = JSON.parse(body);
           body = body.responseData.results;
           var random = Math.floor(Math.random() * body.length);
-          //console.log("Got " + body[random].unescapedUrl + "!");
           postMessage('<img src="' + body[random].unescapedUrl + '" height="100px">');  
         });
       });
@@ -54,7 +54,7 @@ var imageEncode = function(string) {
   console.log("Generating photo tag now.");
   var imgTag = string
                //.replace('"', '')
-               .replace(regexPics, "<img src='$&' height='100px'>");
+               .replace(regexPics, "<img src='$&' height='200px'>");
   console.log(imgTag);
   return imgTag;
 }
@@ -116,6 +116,24 @@ wss.on('connection', function(ws) {
   }); 
 });
 */
+var deleteMsg = function(id) {
+
+  var options = {
+    host: 'tiny-pizza-server.herokuapp.com',
+    path: '/collections/greenville-chats/',
+    method: 'DELETE'
+  };
+
+  options.path += id;
+
+  var req = http.request(options, function(res) {
+    var body = '';
+    res.on('data', function(chunk) { body += chunk;  });
+    res.on('end', function() { console.log(JSON.parse(body));  });
+  });
+  req.end();
+};
+
 app.get("/kickstart", function(req, res) {
   botPoller = setInterval(function() {
     http.get(remoteUrl, function(response) {
@@ -124,6 +142,10 @@ app.get("/kickstart", function(req, res) {
       response.on('end', function() {
         var latest = JSON.parse(body)[0];
         if (latest["_id"] === mostRecentID) { return; }
+        else if (/\<script\>/gi.test(latest["message"])) { 
+          var badID = latest["_id"];
+          deleteMsg(badID);
+        }
         else {
           filterCommands(latest["message"]);
           mostRecentID = latest["_id"];
