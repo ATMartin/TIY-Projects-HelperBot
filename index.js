@@ -87,9 +87,6 @@ wss.on('connection', function(ws) {
         // var filters = /([^\s]+(\.(gif)))/gi.test(JSON.stringify(latest["message"])).toString();
         // ws.send(JSON.stringify(latest).replace(/http://\S*(\.(gif))\s/gi, "<img src='$&'>")), function() {} )});  
         // ws.send(filters, function() {});
-      });
-    });
-  }, 1000);
   
   console.log("connection opened!");
   
