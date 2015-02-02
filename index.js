@@ -31,7 +31,8 @@ var postMessage = function(message) {
   var data = {
     "username": botName,
     "message": message,
-    "createdAt": Date.now()
+    "createdAt": Date.now(),
+    "appName": "After12"
   };
 
   var dataString = JSON.stringify(data);
@@ -42,7 +43,7 @@ var postMessage = function(message) {
   };
 
   var options = {
-    host: 'http://tiny-pizza-server.herokuapp.com',
+    host: 'tiny-pizza-server.herokuapp.com',
     path: '/collections/greenville-chats',
     method: 'POST',
     headers: headers
@@ -60,7 +61,6 @@ var postMessage = function(message) {
   req.on('error', function(e) { console.log(e); });
   req.write(dataString);
   req.end();
-  console.log('wrote request!');
 };
 
 var imageEncode = function(string) {
@@ -70,7 +70,7 @@ var imageEncode = function(string) {
 }
 
 
-postMessage("test");
+postMessage("HelperBot is live!");
 
 var wss = new wsServer({server: server});
 console.log("Created WS Server");
