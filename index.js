@@ -21,6 +21,7 @@ var botInit = "#!";
 var regexPics = /([^\s]+(\.(gif|jpg|jpeg|png)))/gi;
 var mostRecentID;
 var botPoller;
+var cageURL = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&safe=active&q=nic%20cage%20cats";
 
 var filterCommands = function(message) {
   console.log(message);
@@ -32,6 +33,17 @@ var filterCommands = function(message) {
       postMessage(img);
     }
     else if (command == "cageme") {
+      http.get(cageURL, function(res) {
+        var body = '';
+        res.on('data', function(chunk) { body += chunk; });
+        res.on('end', function() {
+          body = JSON.parse(body);
+          body = body.responseData.results;
+          var random = Math.floor(Math.random() * body.length);
+          console.log("Got " + body[random].unescapedUrl + "!");
+          postMessage('<img src="' + body[random].unescapedUrl + '">');  
+        });
+      });
       postMessage("Incoming!");
     }
   }
