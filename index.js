@@ -14,6 +14,64 @@ server.listen(port);
 
 console.log("http server listening on %d", port);
 
+// Bot Functions
+var botName = "HelperBot";
+var botInit = "#!";
+var regexPics = /([^\s]+(\.(gif|jpg|jpeg|png)))/gi;
+
+var filterCommands = function(message) {
+  if (message.split(' ')[0] === botInit) {
+    var command = message.split(' ')[1];
+    if (regexPics.test(command)) { postMessage(imageEncode(command)); }     
+  }
+  return message;
+}
+
+var postMessage = function(message) {
+  var data = {
+    "username": botName,
+    "message": message,
+    "createdAt": Date.now()
+  };
+
+  var dataString = JSON.stringify(data);
+  
+  var headers = {
+    'Content-Type': 'application/json',
+    'Content-Length': Buffer.byteLength(dataString)
+  };
+
+  var options = {
+    host: 'http://tiny-pizza-server.herokuapp.com',
+    path: '/collections/greenville-chats',
+    method: 'POST',
+    headers: headers
+  };
+
+  var req = http.request(options, function(res) {
+    var resString = '';
+    res.setEncoding('utf-8'); 
+    res.on('data', function(chunk) { resString += chunk; });
+    res.on('end', function() {
+      console.log(resString);
+    }); 
+  });
+
+  req.on('error', function(e) { console.log(e); });
+  req.write(dataString);
+  req.end();
+  console.log('wrote request!');
+};
+
+var imageEncode = function(string) {
+  return string
+         .replace('"', '')
+         .replace(/([^\s]+(\.(gif|jpg|jpeg|png)))/gi, '<img src="$&">');
+}
+
+
+postMessage("test");
+
 var wss = new wsServer({server: server});
 console.log("Created WS Server");
 
@@ -45,4 +103,4 @@ wss.on('connection', function(ws) {
   }); 
 });
 
-
+;
