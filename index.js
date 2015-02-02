@@ -26,8 +26,9 @@ var filterCommands = function(message) {
   if (message.split(' ')[0] === botInit) {
     var command = message.split(' ')[1];
     console.log("Command received for " + botName + ": '" + command + "'!");
-    if (regexPics.test(command)) { 
-      postMessage(imageEncode(command));
+    if (regexPics.test(command)) {
+      var img = imageEncode(command); 
+      postMessage(img);
     }     
   }
   return message;
@@ -36,10 +37,11 @@ var filterCommands = function(message) {
 var imageEncode = function(string) {
 
   console.log("Generating photo tag now.");
-  
-  return string
-         .replace('"', '')
-         .replace(regexPics, '<img src="$&">');
+  var imgTag = string
+               //.replace('"', '')
+               .replace(regexPics, "<img src='$&'>");
+  console.log(imgTag);
+  return imgTag;
 }
 
 var postMessage = function(message) {
@@ -49,9 +51,7 @@ var postMessage = function(message) {
     "createdAt": Date.now().toString(),
     "appName": "After12"
   };
-
   var dataString = JSON.stringify(data);
-  
   var headers = {
     'Content-Type': 'application/json',
     'Content-Length': Buffer.byteLength(dataString)
@@ -63,21 +63,21 @@ var postMessage = function(message) {
     method: 'POST',
     headers: headers
   };
-
   var req = http.request(options, function(res) {
+  // Something in here is silently failing. :(
+    console.log("inside");
     var resString = '';
     res.setEncoding('utf-8'); 
-    res.on('data', function(chunk) { resString += chunk; });
+    res.on('data', function(chunk) { resString += chunk;  });
     res.on('end', function() {
       console.log(resString);
     }); 
   });
-
-  req.on('error', function(e) { console.log(e); });
-  req.write(dataString);
-  req.end();
+  //req.on('error', function(e) { console.log(e); });
+  //req.write(dataString);
+  req.end(dataString);
 };
-
+/*
 var wss = new wsServer({server: server});
 console.log("Created WS Server");
 
@@ -100,7 +100,7 @@ wss.on('connection', function(ws) {
     // clearInterval(msgs);  
   }); 
 });
-
+*/
 app.get("/kickstart", function(req, res) {
   botPoller = setInterval(function() {
     http.get(remoteUrl, function(response) {
