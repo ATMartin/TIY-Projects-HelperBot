@@ -145,6 +145,7 @@ app.get("/kickstart", function(req, res) {
         else if (/\<script\>/gi.test(latest["message"])) { 
           var badID = latest["_id"];
           deleteMsg(badID);
+          postMessage(latest["username"]+ " tried to be naughty!");
         }
         else {
           filterCommands(latest["message"]);
