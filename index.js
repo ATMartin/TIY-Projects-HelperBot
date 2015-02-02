@@ -18,6 +18,7 @@ console.log("http server listening on %d", port);
 var botName = "HelperBot";
 var botInit = "#!";
 var regexPics = /([^\s]+(\.(gif|jpg|jpeg|png)))/gi;
+var mostRecentID;
 
 var filterCommands = function(message) {
   console.log(message);
@@ -78,7 +79,7 @@ wss.on('connection', function(ws) {
   // var id = setInterval(function() {
   //   ws.send(JSON.stringify(new Date()), function() { })
   // }, 1000); 
-  var mostRecentID = '';
+  // var mostRecentID = '';
   var msgs = setInterval(function() {
     http.get(remoteUrl, function(res) {
     var body = '';
@@ -109,4 +110,25 @@ wss.on('connection', function(ws) {
   }); 
 });
 
-;
+app.get("/kickstart", function(req, res) {
+  var botPoller = setInterval(function() {
+    http.get(remoteUrl, function(response) {
+      var body = '';
+      response.on('data', function(chunk) { body += chunk; });
+      response.on('end', function() {
+        var latest = JSON.parse(body)[0];
+        if (latest["_id"] === mostRecentID) { return; }
+        else {
+          filterCommands(latest["message"]);
+          mostRecentID = latest["_id"];
+        };
+      });  
+    }); 
+  });
+  res.send("HelperBot is GOOOOOOOO!"); 
+});
+
+app.get("/diediedie", function(req, res) {
+  clearInterval(botPoller);
+  res.send("This HelperBot is NO MORE! It has CEASED to BE!");  
+});
