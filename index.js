@@ -71,7 +71,7 @@ var postMessage = function(message) {
     res.setEncoding('utf-8'); 
     res.on('data', function(chunk) { resString += chunk;  });
     res.on('end', function() {
-      console.log(resString);
+      //console.log(resString);
     }); 
   });
   //req.on('error', function(e) { console.log(e); });
@@ -116,7 +116,7 @@ app.get("/kickstart", function(req, res) {
         };
       });  
     }); 
-  });
+  }, 2000);
   res.send("HelperBot is GOOOOOOOO!"); 
 });
 
